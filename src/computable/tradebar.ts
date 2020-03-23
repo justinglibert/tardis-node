@@ -60,7 +60,7 @@ class TradeBarComputable implements Computable<TradeBar> {
 
     const tradeBar: TradeBar = { ...this._inProgressBar }
 
-    this._reset()
+    this._reset(trade.localTimestamp)
 
     return tradeBar
   }
@@ -124,7 +124,10 @@ class TradeBarComputable implements Computable<TradeBar> {
     inProgressBar.timestamp = trade.timestamp
   }
 
-  private _reset() {
+  private _reset(timestamp) {
+    if(timestamp === undefined) {
+      timestamp = DATE_MIN
+    }
     const barToReset = this._inProgressBar
     barToReset.type = this._type
     barToReset.symbol = ''
@@ -138,11 +141,11 @@ class TradeBarComputable implements Computable<TradeBar> {
     barToReset.low = Number.MAX_SAFE_INTEGER
     barToReset.close = 0
 
-    barToReset.volume = 0
+    barToReset.volume = 1
     barToReset.buyVolume = 0
     barToReset.sellVolume = 0
 
-    barToReset.trades = 0
+    barToReset.trades = 1
     barToReset.vwap = 0
     barToReset.openTimestamp = DATE_MIN
     barToReset.closeTimestamp = DATE_MIN
